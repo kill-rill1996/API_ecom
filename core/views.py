@@ -148,11 +148,13 @@ def cart_delete_single_item(request, slug):
 @login_required
 def cart_list(request):
     order = Order.objects.filter(user=request.user, ordered=False)
-    items = order[0].items.all().order_by('item__title')
-    context = {
-        'items': items,
-        'order': order[0]
-    }
+    context = {}
+    if order:
+        items = order[0].items.all().order_by('item__title')
+        context = {
+            'items': items,
+            'order': order[0]
+        }
     return render(request, 'core/cart.html', context)
 
 
@@ -189,5 +191,17 @@ def remove_from_wish_list_in_list(request, item_slug):
     wish_item.delete()
     messages.warning(request, 'Item was removed form your Favorites')
     return redirect('wish-list')
+
+
+def completed_orders_list(request):
+    orders = Order.objects.filter(user=request.user, ordered=True)
+
+    context = {
+        'orders': orders,
+               }
+    return render(request, 'core/completed_orders_list.html', context)
+
+
+
 
 

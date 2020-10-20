@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Completed orders{% endblock %}
+
+
+{% block content %}
+
+	{% for order in orders %}
+
+		{% for orderitem in order.items.all %}
+
+			<h4>{{ orderitem.item.title }}</h4>
+
+		{% endfor %}
+		<hr>
+	{% endfor %}
+
+{% endblock content %}
