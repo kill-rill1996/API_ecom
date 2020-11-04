@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.views.generic.base import View
 
+from core.forms import ReviewForm
 from core.models import Item, Category, OrderItem, Order, WishItem
 
 current_path = ''
@@ -202,6 +203,18 @@ def completed_orders_list(request):
     return render(request, 'core/completed_orders_list.html', context)
 
 
+class ReviewView(View):
+    """Comments"""
+    def post(self, request, pk):
+        form = ReviewForm(request.POST)
+        item = Item.objects.get(id=pk)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if request.POST.get('parent', None):
+                form.parent_id = int(request.POST.get('parent'))
+            form.item = item
+            form.save()
+        return redirect(item.get_absolute_url())
 
 
 

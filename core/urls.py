@@ -2,7 +2,7 @@ from django.urls import path
 
 from core.views import item_list, item_detail, add_to_cart, cart_list, cart_delete_item, \
     cart_delete_single_item, wish_list, add_to_wish_list, remove_from_wish_list, remove_from_wish_list_in_list, \
-    completed_orders_list
+    completed_orders_list, ReviewView
 
 urlpatterns = [
     path('', item_list, name='home-page'),
@@ -20,5 +20,5 @@ urlpatterns = [
          name='remove-from-wish-list-in-list'),
     path('<str:category_slug>/<str:item_slug>/', item_detail, name='item-detail'),
     path('completed_orders/', completed_orders_list, name='completed-orders-list'),
-
+    path('review/<int:pk>/', ReviewView.as_view(), name='add-review'),
 ]

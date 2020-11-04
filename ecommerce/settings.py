@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
     #auth
     'django.contrib.sites',
     'allauth',
@@ -35,7 +38,10 @@ INSTALLED_APPS = [
 
     'crispy_forms',
 
+    'django_filters',
+
     'core',
+    'core_api',
 ]
 
 MIDDLEWARE = [
@@ -76,11 +82,12 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ecommerce_db',
+        'NAME': 'ecommerce_db3',
         'USER': 'custom_user',
         'PASSWORD': 'w3qxst1ck',
         'HOST': 'localhost',
         'PORT': '5432',
+
     }
 }
 
@@ -147,3 +154,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # CRISPY Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 2
+}

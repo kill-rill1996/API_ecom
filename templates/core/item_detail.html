@@ -180,11 +180,11 @@
                   <div class="contact-single">
                       <h3 class="editContent">
                                       <span class="sub-tittle editContent">
-                                          {{ movie.reviews_set.count }}
+                                          {{ item.reviews_set.count }}
                                       </span>
                           Оставить отзыв
                       </h3> 
-                      <form action="" method="post" class="mt-4" id="FormReview">
+                      <form action="{% url 'add-review' item.id %}" method="post" class="mt-4" id="FormReview">
                           {% csrf_token %}
                           <input type="hidden" name="parent" id="contactparent" value="">
                           <div class="form-group editContent">
@@ -219,6 +219,7 @@
                   <!--  //contact form grid ends here -->
               </div>
           </div>
+
           {% for review in movie.get_review %}
               <div class="media py-5">
                   <img src="" class="mr-3 img-fluid" alt="image">

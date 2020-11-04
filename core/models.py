@@ -21,7 +21,7 @@ class Item(models.Model):
     description = models.TextField()
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_items')
     created = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='items/', default='default.jpg')
 
@@ -62,7 +62,6 @@ class OrderItem(models.Model):
         return f'{self.item.title} - {self.quantity}'
 
     def total_amount(self):
-        print(self.quantity * self.item.discount_price if self.item.discount_price else self.quantity * self.item.price)
         return self.quantity * self.item.discount_price if self.item.discount_price else self.quantity * self.item.price
 
 
@@ -80,8 +79,6 @@ class Order(models.Model):
         result = 0
         for item in self.items.all():
             result += item.total_amount()
-            print(result)
-        print(result)
         return result
 
 
@@ -98,8 +95,21 @@ class WishItem(models.Model):
         verbose_name_plural = "Избранные товары"
 
 
+class Reviews(models.Model):
+    """ Отзывы
+    """
+    email = models.EmailField()
+    name = models.CharField(max_length=100)
+    text = models.TextField(max_length=5000)
+    parent = models.ForeignKey('self',  on_delete=models.CASCADE, null=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.name} - {self.item}'
 
+    class Meta:
+        verbose_name = "Отзыв о товаре"
+        verbose_name_plural = "Отзывы о товаре"
 
 
 
